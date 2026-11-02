@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workflow Claude Code</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#17202c;--muted:#5a6573;--line:#dde2e8;--accent:#0f5fa8;--accentbg:#e8f1fa;--good:#1b6e3c;--goodbg:#e7f4eb;--warn:#8a5a00;--warnbg:#fff4dc;--code:#eef1f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1b212a;--ink:#e7ebf0;--muted:#a3aebb;--line:#333c48;--accent:#7cb8f2;--accentbg:#1a2c3f;--good:#8fd6a8;--goodbg:#16301f;--warn:#f0c674;--warnbg:#352a12;--code:#262e39}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:40px 16px 80px}
+h1{font-size:2rem;line-height:1.2;margin:0 0 10px}
+h2{font-size:1.35rem;margin:46px 0 12px;padding-top:16px;border-top:1px solid var(--line)}
+p{margin:8px 0}
+.lead{font-size:1.1rem;color:var(--muted);max-width:760px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:14px 0}
+.accent{background:var(--accentbg);border-color:var(--accent)}
+.good{background:var(--goodbg);border-color:var(--good)}
+.warn{background:var(--warnbg);border-color:var(--warn)}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font:.88em ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
+pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font:.84rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;margin:8px 0;white-space:pre-wrap}
+pre code{background:none;padding:0}
+.tw{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--card)}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+td:first-child{white-space:nowrap}
+tr.phase td{background:var(--accentbg);font-weight:600;white-space:normal}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:14px 0;font-size:.92rem}
+.flow span{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:5px 9px}
+.flow span.key{background:var(--accentbg);border-color:var(--accent);font-weight:600}
+.flow i{color:var(--muted);font-style:normal}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.cols .box{margin:0}
+ul{padding-left:20px;margin:8px 0}
+li{margin:4px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Un workflow de développement avec Claude Code</h1>
+<p class="lead">Une suite de commandes qui fait passer chaque fonctionnalité par les mêmes étapes, de l'idée au merge. L'IA écrit le code, mais une autre IA le teste, et chaque étape laisse une trace que l'équipe peut relire.</p>
+
+<div class="box accent"><strong>L'idée centrale.</strong> Relire du code ne trouve presque aucun défaut d'exécution : ce sont les tests écrits par quelqu'un d'autre que l'auteur qui les trouvent. Tout le workflow est construit autour de ce constat, mesuré ci-dessous.</div>
+
+<h2>Le cycle d'une fonctionnalité</h2>
+<div class="flow">
+<span>Spec</span><i>→</i><span>Contrats</span><i>→</i><span>Plan</span><i>→</i><span>Revue</span><i>→</i><span>Checklist de tests</span><i>→</i><span>Code</span><i>→</i><span class="key">Tests par un agent distinct</span><i>→</i><span class="key">Mutations</span><i>→</i><span class="key">Porte de validation</span><i>→</i><span>Commit</span><i>→</i><span>Merge</span><i>→</i><span>Résumé</span>
+</div>
+<p>La planification du projet ne se fait qu'une fois. Le cycle, lui, se répète pour chaque fonctionnalité.</p>
+
+<h2>Les commandes</h2>
+<div class="tw"><table>
+<tr><th>Commande</th><th>Rôle</th><th>Quand</th><th>Pourquoi, et ce que l'équipe y gagne</th></tr>
+<tr class="phase"><td colspan="4">Une fois, au démarrage du projet</td></tr>
+<tr><td><code>/generate-versions</code></td><td>Découpe le besoin en MVP, version intermédiaire, version complète</td><td>Dès le brief</td><td>Force à prioriser. Tout le monde sait ce qui est dans le périmètre, et ce qui ne l'est pas</td></tr>
+<tr><td><code>/generate-specs</code></td><td>Consolide les versions retenues en une spec unique</td><td>Après le découpage</td><td>Une seule référence, au lieu de décisions éparpillées</td></tr>
+<tr><td><code>/generate-wireframes</code></td><td>Produit des maquettes HTML navigables</td><td>Après la spec, s'il y a une interface</td><td>Le produit et les développeurs valident les écrans avant le code</td></tr>
+<tr><td><code>/generate-user-stories</code></td><td>Écrit les user stories par epic, avec un ordre d'implémentation</td><td>Après la spec</td><td>Répartir le travail devient simple, chaque story a ses critères</td></tr>
+<tr><td><code>/generate-architecture</code></td><td>Décrit l'architecture, les règles et la sécurité, à partir d'un préréglage de pile si on en a un</td><td>Après les user stories</td><td>Le projet hérite des pièges déjà rencontrés, au lieu de les payer à nouveau</td></tr>
+<tr><td><code>/claude-md</code></td><td>Écrit le fichier que Claude lit à chaque session : conventions, invariants, pièges</td><td>Au tout début, puis dès qu'une règle est découverte</td><td>C'est ce qui rend le workflow obligatoire. Une règle apprise par une personne s'applique ensuite à toute l'équipe</td></tr>
+<tr><td><code>/create-project-agents</code></td><td>Crée des agents adaptés à la pile technique</td><td>Après l'architecture</td><td>Même façon de travailler, quelle que soit la personne qui les lance</td></tr>
+<tr class="phase"><td colspan="4">Pour chaque fonctionnalité : concevoir</td></tr>
+<tr><td><code>/create-feature-spec</code></td><td>Crée la branche et une spec, dont chaque critère dit ce qui prouverait qu'il est faux</td><td>Au départ de toute fonctionnalité</td><td>Un critère vérifiable évite les débats à la recette, et un collègue peut reprendre le sujet</td></tr>
+<tr><td><code>/audit-contracts</code></td><td>Compare mécaniquement ce que le serveur expose et ce que le client consomme</td><td>Avant le plan si le lot touche le back et le front, puis après le code sur ce qui a été ajouté</td><td>L'écart n'est dans aucun des deux dépôts : personne ne le voit seul. Utile dès que back et front sont tenus par des personnes différentes</td></tr>
+<tr><td><code>/create-impl-plan</code></td><td>Produit un plan, avec un inventaire mesuré par des commandes réellement lancées</td><td>Après la spec</td><td>Le plan repose sur des faits vérifiés, pas sur le souvenir du code. Il peut être relu avant le code</td></tr>
+<tr><td><code>/review-impl-plan</code></td><td>Audite le plan contre la spec, le code et le flux réel, sans rien modifier</td><td>Après le plan : une passe si le risque est faible, trois ou plus s'il touche une garde ou l'argent</td><td>Une erreur corrigée dans un plan coûte moins qu'une erreur corrigée en production</td></tr>
+<tr><td><code>revue-plan-autonome</code></td><td>Enchaîne les passes de revue en changeant de question à chaque tour, et s'arrête quand les corrections commencent à créer des régressions</td><td>Sur un plan risqué, à la place de plusieurs revues manuelles</td><td>L'arrêt est mesuré et ne dépend pas de l'intuition de chacun</td></tr>
+<tr><td><code>/create-feature-tests</code></td><td>Écrit la checklist de ce qui devra être prouvé, avec la gravité et la mutation témoin de chaque test</td><td>Avant de coder</td><td>Savoir ce qu'on devra prouver change ce qu'on écrit. La checklist sert aussi de contrat à l'auteur des tests</td></tr>
+<tr class="phase"><td colspan="4">Pour chaque fonctionnalité : réaliser et valider</td></tr>
+<tr><td><code>/commit-message</code></td><td>Rédige un message de commit au format commun, qui explique le pourquoi</td><td>À chaque commit</td><td>Un historique homogène et lisible, utile à la revue et à l'enquête sur un incident</td></tr>
+<tr><td><code>/write-feature-tests</code></td><td>Écrit et lance les vraies suites de tests, et classe chaque échec : défaut du produit ou test erroné</td><td>Après le code, <strong>toujours par un agent distinct</strong></td><td>C'est l'étape qui trouve le plus de défauts. Les suites restent dans le dépôt et protègent toute l'équipe ensuite</td></tr>
+<tr><td><code>/test-feature</code></td><td>Parcourt l'application dans un navigateur et rend un rapport</td><td>Pour vérifier un parcours visible</td><td>Rapide pour explorer. Ne remplace pas des suites, car rien n'est conservé</td></tr>
+<tr><td><code>/run-gate</code></td><td>Lance toute la validation (build, types, lint, tests, base réelle, bout en bout) et rend un verdict chiffré</td><td><code>--quick</code> pendant le code, <code>--full</code> avant de livrer</td><td>La même définition de « terminé » pour tous. Un échec n'est jamais qualifié d'instable sur un seul essai</td></tr>
+<tr class="phase"><td colspan="4">Pour chaque fonctionnalité : livrer</td></tr>
+<tr><td><code>/create-pull-request</code></td><td>Génère la PR à partir des commits, avec un aperçu avant envoi</td><td>Quand la porte est passée</td><td>Le relecteur reçoit le contexte et le plan de test, sans avoir à le demander</td></tr>
+<tr><td><code>/merge-feature</code></td><td>Fusionne proprement, assiste les conflits, demande confirmation avant de pousser ou de supprimer</td><td>Après validation</td><td>Évite les fausses manœuvres sur les branches partagées</td></tr>
+<tr><td><code>/resume-feature</code></td><td>Écrit ce qui a été construit, les choix faits et les pièges découverts</td><td>À la fin</td><td>La mémoire du projet ne dépend plus d'une personne, et l'intégration d'un nouveau venu s'en trouve accélérée</td></tr>
+<tr><td><code>/create-user-guide</code></td><td>Produit un guide illustré avec de vraies captures de l'application</td><td>Avant une présentation ou une livraison</td><td>Un support prêt à montrer à un client, un partenaire ou un investisseur</td></tr>
+</table></div>
+
+<h2>Pourquoi les tests sont écrits par un agent distinct</h2>
+<p>Un auteur qui teste son propre code teste ce qu'il a voulu écrire, pas ce qu'il a écrit. Il partage les mêmes angles morts, qu'il soit humain ou IA. Un agent sans le contexte d'écriture part de la spec, sans savoir ce que le code est censé faire de son point de vue : c'est cette ignorance qui le rend efficace.</p>
+<p>Pour qu'un test compte, il faut aussi l'avoir vu échouer. L'agent casse volontairement le code une ligne à la fois (mutation) et vérifie que le test rougit. Un test qui reste vert quand on casse ce qu'il protège ne protège rien.</p>
+<div class="box"><strong>Exemple de prompt</strong>
+<pre><code>Tu es l'auteur des tests, distinct de celui qui a écrit ce code.
+Exécute /write-feature-tests _plans/ma-feature.md.
+
+À lire : la spec, le plan, la checklist _tests/ma-feature.md, puis git diff.
+
+Règles :
+- Base de données temporaire uniquement, jamais la base de travail.
+- Les valeurs attendues viennent de la spec, pas du code.
+- Ne modifie pas le code de production : classe chaque échec en défaut
+  du produit ou hypothèse de test fausse, avec la preuve fichier:ligne.
+- Joue la mutation témoin de chaque test bloquant, une par commande,
+  en attendant sa fin, et vérifie la restauration avant la suivante.
+- Ne commite rien.
+
+Réponds avec : tests passants et échouants, mutations et résultats,
+défauts produit, éléments non couverts.</code></pre></div>
+
+<h2>Exécuter tout le workflow automatiquement</h2>
+<p>Le cycle complet peut tourner sans intervention, avec une seule consigne. Cela fait gagner beaucoup de temps, à condition que les bonnes conditions soient réunies.</p>
+<div class="box"><strong>Exemple de consigne</strong>
+<pre><code>Implémente cette fonctionnalité en suivant notre workflow :
+spec → plan → revue → checklist de tests → implémentation → tests → commit → merge.
+/write-feature-tests doit être exécutée par un agent distinct.
+Merge local uniquement, ne pousse rien sans mon accord.</code></pre></div>
+<div class="cols">
+<div class="box good"><strong>On peut lancer en confiance quand :</strong>
+<ul>
+<li>le besoin est clair et le périmètre borné ;</li>
+<li>le projet a déjà des tests et une base de test jetable ;</li>
+<li>le <code>CLAUDE.md</code> est à jour ;</li>
+<li>le travail se fait sur une branche, et le merge reste local ;</li>
+<li>« terminé » se mesure : build, tests, lint, en chiffres.</li>
+</ul></div>
+<div class="box warn"><strong>On garde la main quand :</strong>
+<ul>
+<li>il reste une décision produit ou métier à prendre ;</li>
+<li>il s'agit d'un déploiement, ou d'un push qui en déclenche un ;</li>
+<li>une migration peut détruire des données ;</li>
+<li>on touche à des secrets ou à une publication ;</li>
+<li>la validation n'a pas de tests sur lesquels s'appuyer.</li>
+</ul></div>
+</div>
+<p><strong>L'automatisation ne retire pas l'humain, elle le déplace.</strong> La personne n'exécute plus chaque étape : elle fixe le périmètre, tranche les décisions et autorise la mise en ligne.</p>
+<div class="box"><strong>Garde-fous tirés de l'expérience</strong>
+<ul>
+<li><strong>Une commande à la fois pendant les mutations.</strong> Sur un lot, des mutations lancées en parallèle ont faussé des résultats et sont restées un temps dans le code. Elles ont été rejouées seules.</li>
+<li><strong>Vérifier le rapport de l'agent</strong> en rouvrant ses preuves. Un agent qui s'arrête en route ne dit pas toujours où il en est : on contrôle l'état réel du code avant de reprendre.</li>
+<li><strong>Dire ce qui reste.</strong> Un résultat vert ne vaut que pour ce qui a été lancé. Le rapport final cite les chiffres réels et ce qui n'a pas été vérifié.</li>
+</ul></div>
+
+<h2>Ce qui a été mesuré</h2>
+<p>Sur un produit livré de bout en bout (12 modules, environ 50 000 lignes), voici ce qui a trouvé chaque défaut d'exécution :</p>
+<div class="tw"><table>
+<tr><th>Ce qui a trouvé le défaut</th><th>Défauts</th></tr>
+<tr><td style="white-space:normal">Suite d'intégration écrite par un auteur distinct</td><td><strong>10</strong></td></tr>
+<tr><td style="white-space:normal">Croisement des contrats back et front</td><td>3</td></tr>
+<tr><td style="white-space:normal">Bout en bout sur le parcours complet</td><td>2</td></tr>
+<tr><td style="white-space:normal">Passe en mode développement, français et anglais</td><td>2</td></tr>
+<tr><td style="white-space:normal">Relecture de code et revue de plan</td><td><strong>0</strong></td></tr>
+</table></div>
+<p>Les revues restent utiles : elles trouvent des erreurs de conception et de cohérence, avant le code. Sur un correctif récent lié à des paiements, deux revues indépendantes du plan ont soulevé 11 constats, puis les agents de test ont trouvé des défauts qu'elles n'avaient pas vus, dont un chemin qui déplaçait l'argent tout en répondant une erreur.</p>
+<div class="box warn"><strong>À garder en tête.</strong> Ces chiffres viennent de nos propres projets, sans groupe de comparaison : ce sont des observations, pas une preuve générale. Le cycle complet coûte aussi du temps et des jetons, jusqu'à 37 % des jetons d'un lot pour la seule revue du plan mesurée. Pour un petit changement à faible risque, on choisit une revue courte et une porte rapide.</div>
+
+<h2>Ce que ça change pour une équipe</h2>
+<ul>
+<li><strong>Même méthode pour tous :</strong> la qualité dépend moins de la personne qui lance le travail.</li>
+<li><strong>Reprise facile :</strong> spec, plan, checklist et résumé restent dans le projet, chacun peut reprendre le sujet d'un autre.</li>
+<li><strong>Savoir partagé :</strong> un piège rencontré une fois entre dans <code>CLAUDE.md</code>, et s'applique à toute l'équipe.</li>
+<li><strong>Revue humaine mieux ciblée :</strong> le relecteur reçoit un verdict chiffré et peut se concentrer sur les choix, pas sur la mécanique.</li>
+<li><strong>Trace des décisions :</strong> on retrouve pourquoi un choix a été fait, utile pour un audit ou un incident.</li>
+</ul>
+
+<h2>Installer</h2>
+<pre><code>git clone https://github.com/Relbolio/claude-code-workflow-.git
+cd claude-code-workflow-
+mkdir -p ~/.claude/commands ~/.claude/stacks ~/.claude/workflows
+cp commands/* ~/.claude/commands/
+cp stacks/* ~/.claude/stacks/
+cp workflows/* ~/.claude/workflows/</code></pre>
+<p>Dans un projet, commencez par <code>/claude-md</code>, puis <code>/create-feature-spec "ma fonctionnalité"</code>. Le détail de chaque étape est dans <code>commands/WORKFLOW_GUIDE.md</code>.</p>
+</main>
+</body>
+</html>
