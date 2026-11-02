@@ -15,8 +15,8 @@ Spec → Contrats → Plan → Revue → Checklist de tests → Code
 Il faut [Claude Code](https://claude.com/claude-code).
 
 ```bash
-git clone https://github.com/Relbolio/claude-code-workflow-.git
-cd claude-code-workflow-
+git clone https://github.com/Relbolio/claude-code-workflow.git
+cd claude-code-workflow
 mkdir -p ~/.claude/commands ~/.claude/stacks ~/.claude/workflows
 cp commands/* ~/.claude/commands/
 cp stacks/* ~/.claude/stacks/
